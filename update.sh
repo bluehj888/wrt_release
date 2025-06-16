@@ -815,7 +815,7 @@ main() {
     update_affinity_script
     # fix_build_for_openssl
     update_ath11k_fw
-    # fix_mkpkg_format_invalid
+    fix_mkpkg_format_invalid
     chanage_cpuusage
     update_tcping
     add_ax6600_led

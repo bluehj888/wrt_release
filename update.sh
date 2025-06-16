@@ -341,6 +341,17 @@ fix_mkpkg_format_invalid() {
     fi
 }
 
+fix_geodata_version() {
+    local makefile="$BUILD_DIR/feeds/small8/v2ray-geodata/Makefile"
+    if [ -f "$makefile" ]; then
+        echo "修复 v2ray-geodata 版本号格式..."
+        # 修改 GEOIP 版本格式
+        sed -i 's/PKG_VERSION:=$$(GEOIP_VER)-$$(PKG_RELEASE)/PKG_VERSION:=$$(GEOIP_VER)-r$$(PKG_RELEASE)/g' "$makefile"
+        # 修改 GEOSITE 版本格式
+        sed -i 's/PKG_VERSION:=$$(GEOSITE_VER)-$$(PKG_RELEASE)/PKG_VERSION:=$$(GEOSITE_VER)-r$$(PKG_RELEASE)/g' "$makefile"
+    fi
+}
+
 add_ax6600_led() {
     local athena_led_dir="$BUILD_DIR/package/emortal/luci-app-athena-led"
 
@@ -840,6 +851,7 @@ main() {
     fix_rust_compile_error
     update_smartdns_luci
     install_feeds
+    fix_geodata_version
     support_fw4_adg
     update_script_priority
     fix_easytier

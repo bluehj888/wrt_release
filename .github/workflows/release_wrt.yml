@@ -63,9 +63,7 @@ jobs:
 
       - name: Fix script permissions
         run: |
-          chmod +x build.sh
-          chmod +x update.sh
-          chmod +x pre_clone_action.sh
+          find . -type f -name "*.sh" -exec chmod +x {} \;
 
       - name: Initialization Environment
         env:

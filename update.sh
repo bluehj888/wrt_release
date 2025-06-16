@@ -328,12 +328,11 @@ fix_apk_version_format() {
     
     echo "修复 APK 版本号格式..."
     
-    # v2ray-geodata
+    # v2ray-geodata - 所有可能的格式都修复
     local geodata_mk="$BUILD_DIR/feeds/small8/v2ray-geodata/Makefile"
     if [ -f "$geodata_mk" ]; then
         sed -i 's/PKG_VERSION:=$$(GEOIP_VER)-$$(PKG_RELEASE)/PKG_VERSION:=$$(GEOIP_VER)-r$$(PKG_RELEASE)/g' "$geodata_mk"
         sed -i 's/PKG_VERSION:=$$(GEOSITE_VER)-$$(PKG_RELEASE)/PKG_VERSION:=$$(GEOSITE_VER)-r$$(PKG_RELEASE)/g' "$geodata_mk"
-        # 注意：下面这行可能也需要，取决于原文件格式
         sed -i 's/VER)-\$(PKG_RELEASE)/VER)-r\$(PKG_RELEASE)/g' "$geodata_mk"
     fi
     

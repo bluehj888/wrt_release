@@ -1,4 +1,4 @@
-name: Release WRT
+ name: Release WRT
 run-name: Release - ${{ inputs.model }}
 
 on:
@@ -60,6 +60,12 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Fix script permissions
+        run: |
+          chmod +x build.sh
+          chmod +x update.sh
+          chmod +x pre_clone_action.sh
 
       - name: Initialization Environment
         env:

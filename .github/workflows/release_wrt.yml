@@ -76,10 +76,12 @@ jobs:
 
       - name: Check Scripts
         run: |
-         # 使用 -iname 忽略大小写，确保匹配所有 .sh 文件
-         find . -type f -iname "*.sh" -exec dos2unix {} \; -exec chmod +x {} \;
-         # 单独处理 .txt 文件（不需要执行权限）
-         find . -type f -iname "*.txt" -exec dos2unix {} \;
+          # 设置所有 .sh 文件的执行权限
+          find ./ -maxdepth 3 -type f -iname "*.sh" -exec chmod +x {} \;
+          # 处理 patches 目录下无扩展名的文件
+          find ./patches -maxdepth 1 -type f ! -name "*.*" -exec dos2unix {} \; -exec chmod +x {} \;
+          # 同时处理 .sh 和 .txt 文件的换行符
+          find ./ -maxdepth 3 -type f \( -iname "*.sh" -o -iname "*.txt" \) -exec dos2unix {} \;
          
       - name: Initialization Values
         run: |

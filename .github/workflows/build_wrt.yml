@@ -60,9 +60,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Fix script permissions
+      - name: Check Scripts
         run: |
-          find . -type f -name "*.sh" -exec chmod +x {} \;
+          find ./ -maxdepth 3 -type f -iregex ".*\(txt\|sh\)$" -exec dos2unix {} \; -exec chmod +x {} \;
           
       - name: Initialization Environment
         env:

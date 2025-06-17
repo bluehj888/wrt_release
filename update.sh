@@ -336,6 +336,23 @@ fix_apk_version_format() {
         sed -i 's/VER)-\$(PKG_RELEASE)/VER)-r\$(PKG_RELEASE)/g' "$geodata_mk"
     fi
     
+    # 修复所有其他包
+    if [ -f $BUILD_DIR/feeds/small8/luci-lib-taskd/Makefile ]; then
+        sed -i 's/>=1\.0\.3-1/>=1\.0\.3-r1/g' $BUILD_DIR/feeds/small8/luci-lib-taskd/Makefile
+    fi
+    if [ -f $BUILD_DIR/feeds/small8/luci-app-openclash/Makefile ]; then
+        sed -i 's/PKG_RELEASE:=beta/PKG_RELEASE:=1/g' $BUILD_DIR/feeds/small8/luci-app-openclash/Makefile
+    fi
+    if [ -f $BUILD_DIR/feeds/small8/luci-app-quickstart/Makefile ]; then
+        sed -i 's/PKG_VERSION:=0\.8\.16-1/PKG_VERSION:=0\.8\.16/g' $BUILD_DIR/feeds/small8/luci-app-quickstart/Makefile
+        sed -i 's/PKG_RELEASE:=$/PKG_RELEASE:=1/g' $BUILD_DIR/feeds/small8/luci-app-quickstart/Makefile
+    fi
+    if [ -f $BUILD_DIR/feeds/small8/luci-app-store/Makefile ]; then
+        sed -i 's/PKG_VERSION:=0\.1\.27-1/PKG_VERSION:=0\.1\.27/g' $BUILD_DIR/feeds/small8/luci-app-store/Makefile
+        sed -i 's/PKG_RELEASE:=$/PKG_RELEASE:=1/g' $BUILD_DIR/feeds/small8/luci-app-store/Makefile
+    fi
+}
+    
     # 其他包的修复
     if [ -f $BUILD_DIR/feeds/small8/luci-lib-taskd/Makefile ]; then
         sed -i 's/>=1\.0\.3-1/>=1\.0\.3-r1/g' $BUILD_DIR/feeds/small8/luci-lib-taskd/Makefile

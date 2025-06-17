@@ -60,10 +60,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Check Scripts
-        run: |
-          find ./ -maxdepth 3 -type f -iregex ".*\(txt\|sh\)$" -exec dos2unix {} \; -exec chmod +x {} \;
-
       - name: Initialization Environment
         env:
           DEBIAN_FRONTEND: noninteractive
@@ -76,6 +72,13 @@ jobs:
           sudo -E apt -yqq clean
           sudo -E systemctl daemon-reload
           sudo -E timedatectl set-timezone "Asia/Shanghai"
+
+      - name: Check Scripts
+        run: |
+         # 使用 -iname 忽略大小写，确保匹配所有 .sh 文件
+         find . -type f -iname "*.sh" -exec dos2unix {} \; -exec chmod +x {} \;
+         # 单独处理 .txt 文件（不需要执行权限）
+         find . -type f -iname "*.txt" -exec dos2unix {} \;
 
       - name: Initialization Values
         run: |

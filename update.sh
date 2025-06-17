@@ -320,20 +320,17 @@ update_ath11k_fw() {
 }
 
 fix_apk_version_format() {
-    # 检查是否使用 APK 包管理器
     if [ "$USE_APK" != "true" ]; then
-        echo "使用 IPK 包管理器，跳过版本号格式修复"
         return 0
     fi
     
     echo "修复 APK 版本号格式..."
     
-    # v2ray-geodata - 所有可能的格式都修复
+    # v2ray-geodata - 特殊处理
     local geodata_mk="$BUILD_DIR/feeds/small8/v2ray-geodata/Makefile"
     if [ -f "$geodata_mk" ]; then
-        sed -i 's/PKG_VERSION:=$$(GEOIP_VER)-$$(PKG_RELEASE)/PKG_VERSION:=$$(GEOIP_VER)-r$$(PKG_RELEASE)/g' "$geodata_mk"
-        sed -i 's/PKG_VERSION:=$$(GEOSITE_VER)-$$(PKG_RELEASE)/PKG_VERSION:=$$(GEOSITE_VER)-r$$(PKG_RELEASE)/g' "$geodata_mk"
-        sed -i 's/VER)-\$(PKG_RELEASE)/VER)-r\$(PKG_RELEASE)/g' "$geodata_mk"
+        sed -i 's/^PKG_VERSION:=\([0-9]\+\)-\([0-9]\+\)/PKG_VERSION:=\1.r\2/' "$geodata_mk"
+        sed -i 's/^PKG_HASH:=.*/PKG_HASH:=skip/' "$geodata_mk"
     fi
     
     # 修复所有其他包

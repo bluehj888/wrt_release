@@ -863,11 +863,11 @@ main() {
     update_ath11k_fw
     chanage_cpuusage
     update_tcping
-    add_ax6600_led
+    # add_ax6600_led
     set_custom_task
     update_pw
-	install_opkg_distfeeds  # 只在 ipk 模式执行	
-	install_apk_distfeeds  # 只在 APK 模式执行	
+    install_opkg_distfeeds  # 只在 ipk 模式执行	
+    install_apk_distfeeds  # 只在 APK 模式执行	
     update_nss_pbuf_performance
     set_build_signature
     fix_compile_vlmcsd

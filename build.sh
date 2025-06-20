@@ -82,7 +82,6 @@ if ! grep -q "CONFIG_USE_APK" "$CONFIG_FILE"; then
     # 只有文件中没有配置时才添加
     if [ "$USE_APK" = "true" ]; then
         echo "CONFIG_USE_APK=y" >> "$CONFIG_FILE"
-        echo "CONFIG_PACKAGE_apk-openssl=y" >> "$CONFIG_FILE"
         echo "CONFIG_PACKAGE_luci-app-package-manager=y" >> "$CONFIG_FILE"
         echo "CONFIG_PACKAGE_luci-lib-ipkg=n" >> "$CONFIG_FILE"
         echo "使用 APK 包管理系统"

@@ -896,9 +896,9 @@ main() {
     update_package "docker" "tags" "v28.2.2"
     update_package "dockerd" "releases" "v28.2.2"
     # update_package "xray-core"
-	# 取消注释：代理类和 DNS 类应用分别有独立菜单
-    update_proxy_app_menu_location
-    update_dns_app_menu_location
+    # 取消注释：代理类和 DNS 类应用分别有独立菜单
+    #update_proxy_app_menu_location
+    #update_dns_app_menu_location
 }
 
 main "$@"

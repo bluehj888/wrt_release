@@ -151,16 +151,32 @@ mkdir -p "$FIRMWARE_DIR"
 find "$TARGET_DIR" -type f \( -name "*.bin" -o -name "*.manifest" -o -name "*efi.img.gz" -o -name "*.itb" -o -name "*.fip" -o -name "*.ubi" -o -name "*rootfs.tar.gz" \) -exec cp -f {} "$FIRMWARE_DIR/" \;
 \rm -f "$BASE_PATH/firmware/Packages.manifest" 2>/dev/null
 
+# 在 build.sh 中的重命名代码前添加调试信息
+
+echo "=== 调试信息 ==="
+echo "USE_APK 变量值: '$USE_APK'"
+echo "USE_APK 类型: $(type -t USE_APK 2>/dev/null || echo '未定义')"
+echo "环境变量 USE_APK: '${USE_APK:-未设置}'"
+echo "================="
+
 # 重命名固件文件
 if [ "$USE_APK" = "true" ]; then
     pkg_suffix="apk"
+    echo "条件判断: USE_APK=true, 使用 apk 后缀"
 else
     pkg_suffix="ipk"
+    echo "条件判断: USE_APK≠true, 使用 ipk 后缀"
 fi
+
+echo "最终选择的后缀: $pkg_suffix"
 
 cd "$FIRMWARE_DIR" || exit 1
 for file in *squashfs*; do
-    [ -f "$file" ] && mv "$file" "$(echo "$file" | sed "s/squashfs/${pkg_suffix}-squashfs/")"
+    if [ -f "$file" ]; then
+        new_name="$(echo "$file" | sed "s/squashfs/${pkg_suffix}-squashfs/")"
+        echo "重命名: $file -> $new_name"
+        mv "$file" "$new_name"
+    fi
 done
 cd - >/dev/null
 

@@ -176,6 +176,10 @@ install_feeds() {
             if [[ $(basename "$dir") == "small8" ]]; then
                 install_small8
                 install_fullconenat
+												   
+												
+														   
+				  
             else
                 ./scripts/feeds install -f -ap $(basename "$dir")
             fi
@@ -459,6 +463,31 @@ EOF
 [ -f \'/etc/99-distfeeds.conf\' ] && mv \'/etc/99-distfeeds.conf\' \'/etc/opkg/distfeeds.conf\'\n\
 sed -ri \'/check_signature/s@^[^#]@#&@\' /etc/opkg.conf\n" $emortal_def_dir/files/99-default-settings
     fi
+}
+
+install_apk_distfeeds() {
+    # 检查是否使用 OPKG 包管理器
+    if [ "$USE_APK" != "true" ]; then
+        echo "使用 IPK 包管理器，跳过 APK distfeeds 配置"
+        return 0
+    fi
+
+    echo "配置 APK distfeeds..."
+    # 替换 opkg 配置文件为 apk
+    find $BUILD_DIR/package/system/opkg/files -name "opkg*.conf" -exec sed -i 's/opkg/apk/g' {} \; 2>/dev/null
+    
+    # 创建 APK 源配置文件
+    local apk_repo_dir="$BUILD_DIR/package/base-files/files/etc/apk"
+    mkdir -p "$apk_repo_dir"
+    cat <<'EOF' >"$apk_repo_dir/repositories"
+https://mirrors.pku.edu.cn/immortalwrt/snapshots/targets/qualcommax/ipq60xx/packages/packages.adb
+https://mirrors.pku.edu.cn/immortalwrt/snapshots/packages/aarch64_cortex-a53/base/packages.adb
+https://mirrors.pku.edu.cn/immortalwrt/snapshots/packages/aarch64_cortex-a53/luci/packages.adb
+https://mirrors.pku.edu.cn/immortalwrt/snapshots/packages/aarch64_cortex-a53/packages/packages.adb
+https://mirrors.pku.edu.cn/immortalwrt/snapshots/packages/aarch64_cortex-a53/routing/packages.adb
+https://mirrors.pku.edu.cn/immortalwrt/snapshots/packages/aarch64_cortex-a53/telephony/packages.adb
+https://mirrors.pku.edu.cn/immortalwrt/snapshots/packages/aarch64_cortex-a53/video/packages.adb
+EOF
 }
 
 update_nss_pbuf_performance() {
@@ -817,6 +846,7 @@ main() {
     clone_repo
     clean_up
     reset_feeds_conf
+					
     update_feeds
     remove_unwanted_packages
     update_homeproxy
@@ -836,7 +866,8 @@ main() {
     add_ax6600_led
     set_custom_task
     update_pw
-	install_opkg_distfeeds  # 只在 IPK 模式执行
+	install_opkg_distfeeds  # 只在 ipk 模式执行	
+	install_apk_distfeeds  # 只在 APK 模式执行	
     update_nss_pbuf_performance
     set_build_signature
     fix_compile_vlmcsd

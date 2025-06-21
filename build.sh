@@ -76,6 +76,15 @@ if [[ ! -f $INI_FILE ]]; then
     exit 1
 fi
 
+echo "=== 超早期调试信息 ==="
+echo "当前脚本: $0"
+echo "传入参数: $@"
+echo "USE_APK 变量值: '$USE_APK'"
+echo "USE_APK 环境变量: '${USE_APK:-未设置}'"
+echo "所有环境变量中包含 APK 的:"
+env | grep -i apk || echo "没找到相关环境变量"
+echo "========================"
+
 # ==== 包管理配置注入 ====
 # 检查配置是否已存在
 if ! grep -q "CONFIG_USE_APK" "$CONFIG_FILE"; then

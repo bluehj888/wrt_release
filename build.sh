@@ -53,10 +53,11 @@ if [ $# -lt 1 ]; then
 fi
 
 # 环境变量覆盖（云编译使用）
-if [ "$USE_APK" = "false" ]; then
-    if [ -n "${USE_APK}" ]; then
-        USE_APK=${USE_APK}
-    fi
+# 如果环境变量存在且不为空，优先使用环境变量
+if [ -n "${USE_APK:-}" ]; then
+    echo "云编译模式，使用环境变量: USE_APK=$USE_APK"
+else
+    echo "本地编译模式，USE_APK=$USE_APK"
 fi
 
 # ==== 新增部分结束 ====

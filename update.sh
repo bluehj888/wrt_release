@@ -104,7 +104,7 @@ remove_unwanted_packages() {
         "cups"
     )
     local small8_packages=(
-        "ppp" "firewall" "dae" "daed" "daed-next" "libnftnl" "nftables" "dnsmasq"
+        "ppp" "firewall" "dae" "daed" "daed-next" "libnftnl" "nftables" "dnsmasq" "v2ray-geodata"
     )
 
     for pkg in "${luci_packages[@]}"; do
@@ -158,7 +158,7 @@ update_golang() {
 
 install_small8() {
     ./scripts/feeds install -p small8 -f xray-core xray-plugin dns2tcp dns2socks haproxy hysteria \
-        naiveproxy shadowsocks-rust sing-box v2ray-core v2ray-geodata v2ray-geoview v2ray-plugin \
+        naiveproxy shadowsocks-rust sing-box v2ray-core v2ray-geoview v2ray-plugin \
         tuic-client chinadns-ng ipt2socks tcping simple-obfs shadowsocksr-libev \
         luci-app-passwall luci-app-passwall2 alist luci-app-alist smartdns luci-app-smartdns v2dat mosdns luci-app-mosdns \
         adguardhome luci-app-adguardhome ddns-go luci-app-ddns-go taskd luci-lib-xterm luci-lib-taskd \
@@ -354,12 +354,12 @@ fix_apk_version_format() {
     
     echo "修复 APK 版本号格式..."
     
-    # v2ray-geodata - 特殊处理
-    local geodata_mk="$BUILD_DIR/feeds/small8/v2ray-geodata/Makefile"
-    if [ -f "$geodata_mk" ]; then
-        sed -i 's/^PKG_VERSION:=\([0-9]\+\)-\([0-9]\+\)/PKG_VERSION:=\1.r\2/' "$geodata_mk"
-        sed -i 's/^PKG_HASH:=.*/PKG_HASH:=skip/' "$geodata_mk"
-    fi
+    ## v2ray-geodata - 特殊处理
+    #local geodata_mk="$BUILD_DIR/feeds/small8/v2ray-geodata/Makefile"
+    #if [ -f "$geodata_mk" ]; then
+    #    sed -i 's/^PKG_VERSION:=\([0-9]\+\)-\([0-9]\+\)/PKG_VERSION:=\1.r\2/' "$geodata_mk"
+    #    sed -i 's/^PKG_HASH:=.*/PKG_HASH:=skip/' "$geodata_mk"
+    #fi
     
     # 修复所有其他包
     if [ -f $BUILD_DIR/feeds/small8/luci-lib-taskd/Makefile ]; then

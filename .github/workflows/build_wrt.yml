@@ -23,7 +23,7 @@ on:
       # 新增 APK 包管理选项
       USE_APK:
         required: false
-        description: Use APK as package manager?
+        description: Use APK?
         type: boolean
         default: true  # 默认使用 APK
 

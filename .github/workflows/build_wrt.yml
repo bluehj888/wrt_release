@@ -100,7 +100,7 @@ jobs:
 
       - name: Build Firmware
         env:
-          USE_APK: ${{ inputs.USE_APK == true && 'true' || 'false' }}
+          USE_APK: ${{ inputs.USE_APK && 'true' || 'false' }}
         run: ./build.sh ${{ inputs.model }}
 
       - name: Delete Old Cache

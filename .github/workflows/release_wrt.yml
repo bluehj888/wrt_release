@@ -102,7 +102,7 @@ jobs:
 
       - name: Build Firmware
         env:
-          USE_APK: ${{ inputs.USE_APK }}  # 传递包管理选项给 build.sh
+          USE_APK: ${{ inputs.USE_APK == true && 'true' || 'false' }}
         run: ./build.sh ${{ inputs.model }}
 
       - name: Get Kernel Verion

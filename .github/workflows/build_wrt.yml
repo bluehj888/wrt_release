@@ -101,7 +101,14 @@ jobs:
       - name: Build Firmware
         env:
           USE_APK: ${{ inputs.USE_APK && 'true' || 'false' }}
-        run: ./build.sh ${{ inputs.model }}
+        run: |
+          if [ "${{ inputs.USE_APK }}" = "true" ]; then
+            echo "使用 APK 包管理系统编译"
+            ./build.sh ${{ inputs.model }} -apk
+          else
+            echo "使用 IPK 包管理系统编译"
+            ./build.sh ${{ inputs.model }}
+          fi
 
       - name: Delete Old Cache
         run: |

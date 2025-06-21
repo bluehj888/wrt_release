@@ -112,6 +112,8 @@ jobs:
           echo "=============================="
 
       - name: Build Firmware
+        env:
+          USE_APK: ${{ inputs.USE_APK && 'true' || 'false' }}
         run: |
           if [ "${{ inputs.USE_APK }}" = "true" ]; then
             echo "使用 APK 包管理系统编译"

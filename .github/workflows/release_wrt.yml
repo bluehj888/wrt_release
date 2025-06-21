@@ -144,7 +144,9 @@ jobs:
           echo "云编译发布" > release_body.txt
           echo "源码：${{ env.BUILD_SRC }}" >> release_body.txt
           echo "Kernel: ${{ env.KVER }}" >> release_body.txt
-          echo "WIFI密码: 12345678" >> release_body.txt
+          if [ "${{ inputs.model }}" = "redmi_ax6_immwrt" ]; then
+            echo "WIFI密码: 12345678" >> release_body.txt
+          fi
           echo "LAN地址: 192.168.1.1" >> release_body.txt
           echo "包管理: ${{ inputs.USE_APK == true && 'APK' || 'IPK' }}" >> release_body.txt
           echo "插件：" >> release_body.txt

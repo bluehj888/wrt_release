@@ -103,11 +103,11 @@ if ! grep -q "CONFIG_USE_APK" "$CONFIG_FILE"; then
     
     # 显示应用的配置
     echo "应用的包管理配置:"
-    grep -E "CONFIG_USE_APK|CONFIG_PACKAGE_luci-lib-ipkg" "$CONFIG_FILE"
+    grep -E "CONFIG_USE_APK|CONFIG_PACKAGE_luci-lib-ipkg|CONFIG_PACKAGE_luci-app-package-manager" "$CONFIG_FILE"
 else
     # 显示已有配置
     echo "包管理配置已存在:"
-    grep -E "CONFIG_USE_APK|CONFIG_PACKAGE_luci-lib-ipkg" "$CONFIG_FILE"
+    grep -E "CONFIG_USE_APK|CONFIG_PACKAGE_luci-lib-ipkg|CONFIG_PACKAGE_luci-app-package-manager" "$CONFIG_FILE"
 fi
 # ==== 包管理配置注入结束 ====
 

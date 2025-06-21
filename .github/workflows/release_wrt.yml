@@ -112,8 +112,11 @@ jobs:
 
       - name: Build Firmware
         env:
-          USE_APK: ${{ inputs.USE_APK == true && 'true' || 'false' }}
-        run: ./build.sh ${{ inputs.model }}
+          USE_APK: ${{ inputs.USE_APK && 'true' || 'false' }}
+        run: |
+          # 额外确保环境变量正确设置
+          echo "最终环境变量 USE_APK: $USE_APK"
+          ./build.sh ${{ inputs.model }}
 
       - name: Get Kernel Verion
         run: |

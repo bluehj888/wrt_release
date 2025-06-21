@@ -107,16 +107,19 @@ jobs:
           echo "inputs.USE_APK type: $(echo '${{ inputs.USE_APK }}' | wc -c) characters"
           echo "inputs.USE_APK == true: ${{ inputs.USE_APK == true }}"
           echo "inputs.USE_APK == 'true': ${{ inputs.USE_APK == 'true' }}"
-          echo "布尔值转换结果: ${{ inputs.USE_APK == true && 'true' || 'false' }}"
+          echo "原表达式结果: ${{ inputs.USE_APK == true && 'true' || 'false' }}"
+          echo "字符串转换结果: ${{ inputs.USE_APK && 'true' || 'false' }}"
           echo "=============================="
 
       - name: Build Firmware
-        env:
-          USE_APK: ${{ inputs.USE_APK && 'true' || 'false' }}
         run: |
-          # 额外确保环境变量正确设置
-          echo "最终环境变量 USE_APK: $USE_APK"
-          ./build.sh ${{ inputs.model }}
+          if [ "${{ inputs.USE_APK }}" = "true" ]; then
+            echo "使用 APK 包管理系统编译"
+            ./build.sh ${{ inputs.model }} -apk
+          else
+            echo "使用 IPK 包管理系统编译"
+            ./build.sh ${{ inputs.model }}
+          fi
 
       - name: Get Kernel Verion
         run: |
@@ -151,7 +154,7 @@ jobs:
             echo "WIFI密码: 12345678" >> release_body.txt
           fi
           echo "LAN地址: 192.168.1.1" >> release_body.txt
-          echo "包管理: ${{ inputs.USE_APK == true && 'APK' || 'IPK' }}" >> release_body.txt
+          echo "包管理: ${{ inputs.USE_APK && 'APK' || 'IPK' }}" >> release_body.txt
           echo "插件：" >> release_body.txt
           echo "$(grep -oP "luci-app(-[a-zA-Z0-9]{1,}){1,}" ./firmware/*.manifest | awk -F":" '{print $NF}')"  >> release_body.txt
 

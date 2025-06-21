@@ -490,20 +490,18 @@ sed -ri \'/check_signature/s@^[^#]@#&@\' /etc/opkg.conf\n" $emortal_def_dir/file
 }
 
 install_apk_distfeeds() {
-    # 检查是否使用 OPKG 包管理器
+    # 检查是否使用 APK 包管理器
     if [ "$USE_APK" != "true" ]; then
         echo "使用 IPK 包管理器，跳过 APK distfeeds 配置"
         return 0
     fi
 
-    echo "配置 APK distfeeds..."
-    # 替换 opkg 配置文件为 apk
-    find $BUILD_DIR/package/system/opkg/files -name "opkg*.conf" -exec sed -i 's/opkg/apk/g' {} \; 2>/dev/null
-    
-    # 创建 APK 源配置文件
-    local apk_repo_dir="$BUILD_DIR/package/base-files/files/etc/apk"
-    mkdir -p "$apk_repo_dir"
-    cat <<'EOF' >"$apk_repo_dir/repositories"
+    echo "配置 APK repositories..."
+    # 创建 APK 主配置文件目录
+    local apk_config_dir="$BUILD_DIR/package/base-files/files/etc/apk"
+    mkdir -p "$apk_config_dir"
+    # 创建 /etc/apk/repositories 文件（主要软件源配置）
+    cat <<'EOF' >"$apk_config_dir/repositories"
 https://mirrors.pku.edu.cn/immortalwrt/snapshots/targets/qualcommax/ipq60xx/packages/packages.adb
 https://mirrors.pku.edu.cn/immortalwrt/snapshots/packages/aarch64_cortex-a53/base/packages.adb
 https://mirrors.pku.edu.cn/immortalwrt/snapshots/packages/aarch64_cortex-a53/luci/packages.adb
@@ -512,6 +510,7 @@ https://mirrors.pku.edu.cn/immortalwrt/snapshots/packages/aarch64_cortex-a53/rou
 https://mirrors.pku.edu.cn/immortalwrt/snapshots/packages/aarch64_cortex-a53/telephony/packages.adb
 https://mirrors.pku.edu.cn/immortalwrt/snapshots/packages/aarch64_cortex-a53/video/packages.adb
 EOF
+    echo "APK repositories 配置完成"
 }
 
 update_nss_pbuf_performance() {

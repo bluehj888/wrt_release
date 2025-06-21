@@ -228,6 +228,18 @@ fix_ddns_log_display() {
     fi
 }
 
+fix_ttyd_autologin() {
+    # TTYD 免登录修复
+    local ttyd_config_file="$BUILD_DIR/feeds/packages/utils/ttyd/files/ttyd.config"
+    
+    if [ -f "$ttyd_config_file" ]; then
+        sed -i 's|/bin/login|/bin/login -f root|g' "$ttyd_config_file"
+        echo "TTYD 免登录已配置"
+    else
+        echo "TTYD 配置文件未找到，跳过免登录配置"
+    fi
+}
+
 change_dnsmasq2full() {
     if ! grep -q "dnsmasq-full" $BUILD_DIR/include/target.mk; then
         sed -i 's/dnsmasq/dnsmasq-full/g' ./include/target.mk
@@ -862,8 +874,11 @@ main() {
     update_feeds
     remove_unwanted_packages
     update_homeproxy
+    fix_ttyd_autologin
     fix_default_set
     fix_miniupnpd
+    fix_ttyd_autologin
+    fix_ddns_log_display
     update_golang
     change_dnsmasq2full
     fix_mk_def_depends
@@ -897,7 +912,6 @@ main() {
     update_lucky
     fix_rust_compile_error
     update_smartdns_luci
-    fix_ddns_log_display
     install_feeds
     fix_apk_version_format  # 只在 APK 模式执行	
     support_fw4_adg

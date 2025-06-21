@@ -1,5 +1,5 @@
 name: Build WRT
-run-name: Build - ${{ inputs.model }}
+run-name: Build - ${{ inputs.model }} - ${{ fromJSON(inputs.USE_APK) && 'APK' || 'IPK' }})
 
 on:
   workflow_dispatch:

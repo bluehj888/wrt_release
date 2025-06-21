@@ -100,6 +100,16 @@ jobs:
             done
           fi
 
+      - name: Debug GitHub Actions Variables
+        run: |
+          echo "=== GitHub Actions 调试信息 ==="
+          echo "inputs.USE_APK: '${{ inputs.USE_APK }}'"
+          echo "inputs.USE_APK type: $(echo '${{ inputs.USE_APK }}' | wc -c) characters"
+          echo "inputs.USE_APK == true: ${{ inputs.USE_APK == true }}"
+          echo "inputs.USE_APK == 'true': ${{ inputs.USE_APK == 'true' }}"
+          echo "布尔值转换结果: ${{ inputs.USE_APK == true && 'true' || 'false' }}"
+          echo "=============================="
+
       - name: Build Firmware
         env:
           USE_APK: ${{ inputs.USE_APK == true && 'true' || 'false' }}

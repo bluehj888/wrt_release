@@ -216,6 +216,18 @@ fix_miniupnpd() {
     fi
 }
 
+fix_ddns_log_display() {
+    # 修复 DDNS 日志无法滚动问题
+    local ddns_overview_file="$BUILD_DIR/feeds/luci/applications/luci-app-ddns/htdocs/luci-static/resources/view/ddns/overview.js"
+    
+    if [ -f "$ddns_overview_file" ]; then
+        sed -i "s/'textarea', { 'style': 'width:100%;/'textarea', { 'style': 'width:100%; overflow-y:auto;/" "$ddns_overview_file"
+        echo "DDNS 日志显示已修复！"
+    else
+        echo "DDNS overview.js 文件未找到，跳过修复"
+    fi
+}
+
 change_dnsmasq2full() {
     if ! grep -q "dnsmasq-full" $BUILD_DIR/include/target.mk; then
         sed -i 's/dnsmasq/dnsmasq-full/g' ./include/target.mk
@@ -885,8 +897,9 @@ main() {
     update_lucky
     fix_rust_compile_error
     update_smartdns_luci
+    fix_ddns_log_display
     install_feeds
-	fix_apk_version_format  # 只在 APK 模式执行	
+    fix_apk_version_format  # 只在 APK 模式执行	
     support_fw4_adg
     update_script_priority
     fix_easytier

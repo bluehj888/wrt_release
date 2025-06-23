@@ -92,22 +92,19 @@ if ! grep -q "CONFIG_USE_APK" "$CONFIG_FILE"; then
     # 只有文件中没有配置时才添加
     if [ "$USE_APK" = "true" ]; then
         echo "CONFIG_USE_APK=y" >> "$CONFIG_FILE"
-        echo "CONFIG_PACKAGE_luci-app-package-manager=y" >> "$CONFIG_FILE"
-        echo "CONFIG_PACKAGE_luci-lib-ipkg=n" >> "$CONFIG_FILE"
         echo "使用 APK 包管理系统"
     else
         echo "CONFIG_USE_APK=n" >> "$CONFIG_FILE"
-        echo "CONFIG_PACKAGE_luci-lib-ipkg=y" >> "$CONFIG_FILE"
         echo "使用 IPK (opkg) 包管理系统"
     fi
     
     # 显示应用的配置
     echo "应用的包管理配置:"
-    grep -E "CONFIG_USE_APK|CONFIG_PACKAGE_luci-lib-ipkg|CONFIG_PACKAGE_luci-app-package-manager" "$CONFIG_FILE"
+    grep -E "CONFIG_USE_APK" "$CONFIG_FILE"
 else
     # 显示已有配置
     echo "包管理配置已存在:"
-    grep -E "CONFIG_USE_APK|CONFIG_PACKAGE_luci-lib-ipkg|CONFIG_PACKAGE_luci-app-package-manager" "$CONFIG_FILE"
+    grep -E "CONFIG_USE_APK" "$CONFIG_FILE"
 fi
 # ==== 包管理配置注入结束 ====
 
